@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Search,
   Plus,
@@ -8,15 +8,19 @@ import {
   CheckCircle,
   XCircle,
   LogOut,
+  Trash2,
+  ArrowUpRight,
 } from "lucide-react";
+
 import "./styles.css";
-import cardlogo from "./../assets/cardlogo.png";
+import cardlogo from "../../public/cardlogo.png";
 import { useNavigate } from "react-router-dom";
 
 const TaskDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
 
   const navigate = useNavigate();
 
@@ -42,7 +46,7 @@ const TaskDashboard = () => {
       startDate: "2024-01-15",
       endDate: "2024-01-20",
       completed: true,
-      image: "/api/placeholder/64/64",
+      image: cardlogo,
     },
     {
       _id: "3",
@@ -53,7 +57,7 @@ const TaskDashboard = () => {
       startDate: "2024-01-15",
       endDate: "2024-01-20",
       completed: false,
-      image: "/api/placeholder/64/64",
+      image: cardlogo,
     },
     {
       _id: "4",
@@ -64,7 +68,7 @@ const TaskDashboard = () => {
       startDate: "2024-01-15",
       endDate: "2024-01-20",
       completed: false,
-      image: "/api/placeholder/64/64",
+      image: cardlogo,
     },
     {
       _id: "5",
@@ -75,7 +79,7 @@ const TaskDashboard = () => {
       startDate: "2024-01-15",
       endDate: "2024-01-20",
       completed: true,
-      image: "/api/placeholder/64/64",
+      image: cardlogo,
     },
     {
       _id: "6",
@@ -86,7 +90,7 @@ const TaskDashboard = () => {
       startDate: "2024-01-15",
       endDate: "2024-01-20",
       completed: false,
-      image: "/api/placeholder/64/64",
+      image: cardlogo,
     },
   ];
 
@@ -127,6 +131,10 @@ const TaskDashboard = () => {
     });
   };
 
+  const handleDelete = () => {};
+
+  const handleToggleComplete = () => {};
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -134,16 +142,42 @@ const TaskDashboard = () => {
 
   const TaskCard = ({ task }) => (
     <div className="bg-[#f5f6f7] rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-center mb-4 relative">
-        <div className="w-16 h-16 bg-blue-200 rounded-lg flex items-center justify-center mx-auto">
-          <div className="w-8 h-8 rounded">
-            <img src={cardlogo} alt="logo" />
+      <div className="relative mb-4">
+        <div className="w-full flex items-center justify-center">
+          <div className="w-16 h-16 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 rounded overflow-hidden">
+              <img src={task.image} alt="logo" />
+            </div>
           </div>
         </div>
 
-        <button className="absolute top-0 right-0 text-gray-400 hover:text-gray-600">
+        {/* More Options Button */}
+        <button
+          onClick={() => setShowMenu((prev) => !prev)}
+          className="absolute top-1 right-1 hover:text-gray-600"
+        >
           <MoreVertical size={20} />
         </button>
+
+        {/* Dropdown Menu */}
+        {showMenu && (
+          <div className="absolute top-10 right-1 bg-white border rounded-lg shadow-lg w-40 z-10">
+            <button
+              onClick={() => handleDelete(task._id)}
+              className="flex items-center w-full px-4 py-2 text-red-600 hover:bg-red-50 text-xs"
+            >
+              <Trash2 size={12} className="mr-2" />
+              Delete
+            </button>
+            <button
+              onClick={() => handleToggleComplete(task._id)}
+              className="flex items-center w-full px-4 py-2 text-gray-900 hover:bg-gray-100 text-xs"
+            >
+              <ArrowUpRight size={12} className="mr-2" />
+              Mark As Completed
+            </button>
+          </div>
+        )}
       </div>
 
       <h3 className="font-semibold text-lg text-gray-900 mb-2 text-center">{task.title}</h3>

@@ -21,6 +21,7 @@ export default function AddTask() {
   const [endDate, setEndDate] = useState("");
   const [assignee, setAssignee] = useState("");
   const [users, setUsers] = useState([]);
+  const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
 
@@ -111,7 +112,7 @@ export default function AddTask() {
                 value={assignee}
                 onChange={(e) => setAssignee(e.target.value)}
                 required
-                className="border p-2 rounded w-full"
+                className="border p-2 rounded w-full pr-4"
               >
                 <option value="">Select User</option>
               </select>
@@ -140,10 +141,27 @@ export default function AddTask() {
             </div>
             <div className="p-4">
               <label className="block mb-2 font-medium">Image</label>
-              <input type="file" onChange={() => {}} className="block w-full" />
+              <div className="flex items-center space-x-4 border-1 rounded-xl">
+                <input
+                  id="fileInput"
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  className="hidden"
+                />
+
+                <label
+                  htmlFor="fileInput"
+                  className="cursor-pointer bg-[#274297] text-white px-4 py-2 rounded-l-xl hover:bg-blue-100 hover:text-black transition"
+                >
+                  Choose File
+                </label>
+
+                {/* File name display */}
+                <span className="text-sm text-gray-600">{file ? file.name : "No file chosen"}</span>
+              </div>
             </div>
             <div className="px-4 pb-4">
-              <button type="submit" className="bg-blue-900 text-white py-2 px-6 rounded w-full">
+              <button type="submit" className="bg-[#274297] text-white py-2 px-6 rounded w-full">
                 Save
               </button>
             </div>
