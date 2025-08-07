@@ -4,6 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import "./styles.css";
 import API from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [error, setError] = useState();
@@ -15,6 +16,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -24,8 +26,9 @@ export default function Login() {
 
     try {
       const { email, password } = formData;
+
       const res = await API.post("/login", { email, password });
-      localStorage.setItem("token", res.data.token);
+      login(res.data.token);
       console.log("Redirecting...");
       navigate("/tasks");
     } catch (err) {

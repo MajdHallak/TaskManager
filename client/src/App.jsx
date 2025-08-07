@@ -7,28 +7,24 @@ import { useEffect, useState } from "react";
 import { useAuth } from "./context/AuthContext";
 
 const App = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+  if (loading) return null;
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={isAuthenticated ? <Navigate to="/tasks" /> : <Navigate to="/login" />}
-        />
+    <Routes>
+      <Route
+        path="/"
+        element={isAuthenticated ? <Navigate to="/tasks" /> : <Navigate to="/login" />}
+      />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/tasks"
-          element={isAuthenticated ? <TaskDashboard /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/add-task"
-          element={isAuthenticated ? <AddTask /> : <Navigate to="/login" />}
-        />
-      </Routes>
-    </Router>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route
+        path="/tasks"
+        element={isAuthenticated ? <TaskDashboard /> : <Navigate to="/login" />}
+      />
+      <Route path="/add-task" element={isAuthenticated ? <AddTask /> : <Navigate to="/login" />} />
+    </Routes>
   );
 };
 
