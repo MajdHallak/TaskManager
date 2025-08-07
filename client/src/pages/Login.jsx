@@ -26,6 +26,7 @@ export default function Login() {
       const { email, password } = formData;
       const res = await API.post("/login", { email, password });
       localStorage.setItem("token", res.data.token);
+      console.log("Redirecting...");
       navigate("/tasks");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");

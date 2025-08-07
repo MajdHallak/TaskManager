@@ -3,9 +3,11 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import TaskDashboard from "./pages/TaskDashboard";
 import AddTask from "./pages/AddTask";
+import { useEffect, useState } from "react";
+import { useAuth } from "./context/AuthContext";
 
 const App = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
+  const { isAuthenticated } = useAuth();
 
   return (
     <Router>

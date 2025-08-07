@@ -7,30 +7,42 @@ const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
 router.get("/", async (req, res) => {
-  const tasks = await Task.find({ createdBy: req.user.id }).populate("assignee");
-  res.json(tasks);
+  try {
+    const tasks = await Task.find({ createdBy: req.user.id }).populate("assignee");
+    res.json(tasks);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.post("/", upload.single("image"), async (req, res) => {
-  const { title, description, assignee, startDate, endDate } = req.body;
-  const image = req.file?.path || null;
-  const task = await Task.create({
-    title,
-    description,
-    image,
-    assignee,
-    startDate,
-    endDate,
-    createdBy: req.user.id,
-  });
-  res.json(task);
+  try {
+    const { title, description, assignee, startDate, endDate } = req.body;
+    const image = req.file?.path || null;
+    const task = await Task.create({
+      title,
+      description,
+      image,
+      assignee,
+      startDate,
+      endDate,
+      createdBy: req.user.id,
+    });
+    res.json(task);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.patch("/:id/status", async (req, res) => {
-  const task = await Task.findById(req.params.id);
-  task.completed = !task.completed;
-  await task.save();
-  res.json(task);
+  try {
+    const task = await Task.findById(req.params.id);
+    task.completed = !task.completed;
+    await task.save();
+    res.json(task);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 router.delete("/:id", async (req, res) => {

@@ -2,17 +2,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {
-  Search,
-  Plus,
-  MoreVertical,
-  Calendar,
-  User,
-  CheckCircle,
-  XCircle,
-  LogOut,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
 import API from "../services/api";
+import { FaAngleLeft } from "react-icons/fa";
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
@@ -99,7 +91,14 @@ export default function AddTask() {
         {/* Header */}
         <header className="bg-white border-b border-gray-200 w-full h-20">
           <div className="flex justify-between items-center h-full px-6">
-            <h1 className="text-2xl font-bold">Add Task</h1>
+            <button
+              onClick={() => {
+                console.log(navigate("/tasks"));
+              }}
+            >
+              <FaAngleLeft size={32} />
+            </button>
+            <h1 className="text-2xl font-bold mr-auto ml-4">Add Task</h1>
             <div className="text-right">
               <p className="font-semibold">Hassan Aljeshi</p>
               <p className="text-sm text-gray-500">Email@example.com</p>
