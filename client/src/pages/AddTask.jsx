@@ -12,14 +12,16 @@ import {
   XCircle,
   LogOut,
 } from "lucide-react";
+import API from "../services/api";
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
+  const [assignee, setAssignee] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [assignee, setAssignee] = useState("");
+  const [image, setImage] = useState(null);
+
   const [users, setUsers] = useState([]);
   const [file, setFile] = useState(null);
 
@@ -28,9 +30,10 @@ export default function AddTask() {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
-      const res = await axios.get("/api/users", {
+      const res = await API.get("/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(res.data);
       setUsers(res.data);
     };
     fetchUsers();
@@ -75,6 +78,14 @@ export default function AddTask() {
 
         <div className="absolute bottom-6 left-6">
           <button
+            className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors"
+            onClick={() => {
+              console.log("Fetched users:", users);
+            }}
+          >
+            <p>testing</p>
+          </button>
+          <button
             onClick={handleLogout}
             className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors"
           >
@@ -104,7 +115,7 @@ export default function AddTask() {
                 type="text"
                 placeholder="Enter Title"
                 value={title}
-                onChange={() => {}}
+                onChange={(e) => setTitle(e.target.value)}
                 required
                 className="border p-2 rounded w-full"
               />
@@ -115,18 +126,23 @@ export default function AddTask() {
                 className="border p-2 rounded w-full pr-4"
               >
                 <option value="">Select User</option>
+                {users.map((user) => (
+                  <option key={user._id} value={user.email} className="text-black">
+                    {user.email}
+                  </option>
+                ))}
               </select>
               <input
                 type="date"
                 value={startDate}
-                onChange={() => {}}
+                onChange={(e) => setStartDate(e.target.value)}
                 required
                 className="border p-2 rounded w-full"
               />
               <input
                 type="date"
                 value={endDate}
-                onChange={() => {}}
+                onChange={(e) => setEndDate(e.target.value)}
                 required
                 className="border p-2 rounded w-full"
               />
@@ -135,7 +151,7 @@ export default function AddTask() {
               <textarea
                 placeholder="Enter Description"
                 value={description}
-                onChange={() => {}}
+                onChange={(e) => setDescription(e.target.value)}
                 className="border p-2 rounded w-full h-24"
               ></textarea>
             </div>

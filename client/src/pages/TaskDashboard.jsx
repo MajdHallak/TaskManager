@@ -13,8 +13,9 @@ import {
 } from "lucide-react";
 
 import "./styles.css";
-import cardlogo from "../../public/cardlogo.png";
+import cardlogo from "/cardlogo.png";
 import { useNavigate } from "react-router-dom";
+import API from "../services/api";
 
 const TaskDashboard = () => {
   const [tasks, setTasks] = useState([]);
@@ -95,26 +96,43 @@ const TaskDashboard = () => {
   ];
 
   useEffect(() => {
-    // Replace this with your actual API call
     const fetchTasks = async () => {
       try {
-        // const response = await fetch('/api/tasks');
-        // const data = await response.json();
-        // setTasks(data);
-
-        // For now, using mock data
-        setTimeout(() => {
-          setTasks(mockTasks);
-          setLoading(false);
-        }, 1000);
+        const token = localStorage.getItem("token");
+        const response = await API.get("/tasks", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setTasks(response.data);
       } catch (error) {
         console.error("Error fetching tasks:", error);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchTasks();
   }, []);
+
+  // useEffect(() => {
+  //   const fetchTasks = async () => {
+  //     try {
+  //       // const response = await fetch('/api/tasks');
+  //       // const data = await response.json();
+  //       // setTasks(data);
+
+  //       // For now, using mock data
+  //       setTimeout(() => {
+  //         setTasks(mockTasks);
+  //         setLoading(false);
+  //       }, 1000);
+  //     } catch (error) {
+  //       console.error("Error fetching tasks:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchTasks();
+  // }, []);
 
   const filteredTasks = tasks.filter(
     (task) =>

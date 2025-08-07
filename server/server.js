@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
 import { authenticate } from "./middleware/auth.js";
 import path from "path";
@@ -31,6 +32,7 @@ mongoose
   .catch((err) => console.error(err));
 
 app.use("/api", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/tasks", authenticate, taskRoutes);
 
 app.listen(5003, () => console.log("Server running on port 5003"));

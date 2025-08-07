@@ -1,11 +1,10 @@
 import express from "express";
 import User from "../models/User.js";
-import { protect } from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/users", protect, async (req, res) => {
-  const users = await User.find({}, "_id name");
+router.get("/", async (req, res) => {
+  const users = await User.find({}, "_id email firstname lastname");
   res.json(users);
 });
 

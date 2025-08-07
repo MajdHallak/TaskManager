@@ -24,9 +24,7 @@ export default function Login() {
 
     try {
       const { email, password } = formData;
-
       const res = await API.post("/login", { email, password });
-
       localStorage.setItem("token", res.data.token);
       navigate("/tasks");
     } catch (err) {
